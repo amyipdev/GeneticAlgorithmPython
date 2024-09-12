@@ -1,6 +1,6 @@
 import copy
 import numpy
-import tensorflow.keras
+import keras
 
 def model_weights_as_vector(model):
     """
@@ -100,7 +100,7 @@ def predict(model,
     # Fetch the parameters of the best solution.
     solution_weights = model_weights_as_matrix(model=model,
                                                weights_vector=solution)
-    _model = tensorflow.keras.models.clone_model(model)
+    _model = keras.models.clone_model(model)
     _model.set_weights(solution_weights)
     predictions = _model.predict(x=data,
                                  batch_size=batch_size,

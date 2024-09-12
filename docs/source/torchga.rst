@@ -664,7 +664,7 @@ Here is the code.
 
    # Data outputs
    data_outputs = torch.from_numpy(numpy.load("outputs.npy")).long()
-   # The next 2 lines are equivelant to this Keras function to perform 1-hot encoding: tensorflow.keras.utils.to_categorical(data_outputs)
+   # The next 2 lines are equivelant to this Keras function to perform 1-hot encoding: keras.utils.to_categorical(data_outputs)
    # temp_outs = numpy.zeros((data_outputs.shape[0], numpy.unique(data_outputs).size), dtype=numpy.uint8)
    # temp_outs[numpy.arange(data_outputs.shape[0]), numpy.uint8(data_outputs)] = 1
 

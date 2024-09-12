@@ -1,4 +1,4 @@
-import tensorflow.keras
+import keras
 import pygad.kerasga
 import numpy
 import pygad
@@ -12,7 +12,7 @@ def fitness_func(ga_instanse, solution, sol_idx):
                                         solution=solution,
                                         data=data_inputs)
 
-    cce = tensorflow.keras.losses.CategoricalCrossentropy()
+    cce = keras.losses.CategoricalCrossentropy()
     solution_fitness = 1.0 / \
         (cce(data_outputs, predictions).numpy() + 0.00000001)
 
@@ -26,22 +26,22 @@ def on_generation(ga_instance):
 
 
 # Build the keras model using the functional API.
-input_layer = tensorflow.keras.layers.Input(shape=(100, 100, 3))
-conv_layer1 = tensorflow.keras.layers.Conv2D(filters=5,
+input_layer = keras.layers.Input(shape=(100, 100, 3))
+conv_layer1 = keras.layers.Conv2D(filters=5,
                                              kernel_size=7,
                                              activation="relu")(input_layer)
-max_pool1 = tensorflow.keras.layers.MaxPooling2D(pool_size=(5, 5),
+max_pool1 = keras.layers.MaxPooling2D(pool_size=(5, 5),
                                                  strides=5)(conv_layer1)
-conv_layer2 = tensorflow.keras.layers.Conv2D(filters=3,
+conv_layer2 = keras.layers.Conv2D(filters=3,
                                              kernel_size=3,
                                              activation="relu")(max_pool1)
-flatten_layer = tensorflow.keras.layers.Flatten()(conv_layer2)
-dense_layer = tensorflow.keras.layers.Dense(
+flatten_layer = keras.layers.Flatten()(conv_layer2)
+dense_layer = keras.layers.Dense(
     15, activation="relu")(flatten_layer)
-output_layer = tensorflow.keras.layers.Dense(
+output_layer = keras.layers.Dense(
     4, activation="softmax")(dense_layer)
 
-model = tensorflow.keras.Model(inputs=input_layer, outputs=output_layer)
+model = keras.Model(inputs=input_layer, outputs=output_layer)
 
 # Create an instance of the pygad.kerasga.KerasGA class to build the initial population.
 keras_ga = pygad.kerasga.KerasGA(model=model,
@@ -52,7 +52,7 @@ data_inputs = numpy.load("../data/dataset_inputs.npy")
 
 # Data outputs
 data_outputs = numpy.load("../data/dataset_outputs.npy")
-data_outputs = tensorflow.keras.utils.to_categorical(data_outputs)
+data_outputs = keras.utils.to_categorical(data_outputs)
 
 # Prepare the PyGAD parameters. Check the documentation for more information: https://pygad.readthedocs.io/en/latest/README_pygad_ReadTheDocs.html#pygad-ga-class
 num_generations = 200  # Number of generations.
@@ -86,11 +86,11 @@ predictions = pygad.kerasga.predict(model=model,
 # print("Predictions : \n", predictions)
 
 # Calculate the categorical crossentropy for the trained model.
-cce = tensorflow.keras.losses.CategoricalCrossentropy()
+cce = keras.losses.CategoricalCrossentropy()
 print(f"Categorical Crossentropy : {cce(data_outputs, predictions).numpy()}")
 
 # Calculate the classification accuracy for the trained model.
-ca = tensorflow.keras.metrics.CategoricalAccuracy()
+ca = keras.metrics.CategoricalAccuracy()
 ca.update_state(data_outputs, predictions)
 accuracy = ca.result().numpy()
 print(f"Accuracy : {accuracy}")

@@ -1,4 +1,4 @@
-import tensorflow.keras
+import keras
 import pygad.kerasga
 import numpy
 import pygad
@@ -10,7 +10,7 @@ def fitness_func(ga_instanse, solution, sol_idx):
                                         solution=solution,
                                         data=data_inputs)
     
-    bce = tensorflow.keras.losses.BinaryCrossentropy()
+    bce = keras.losses.BinaryCrossentropy()
     solution_fitness = 1.0 / (bce(data_outputs, predictions).numpy() + 0.00000001)
 
     return solution_fitness
@@ -20,11 +20,11 @@ def on_generation(ga_instance):
     print(f"Fitness    = {ga_instance.best_solution()[1]}")
 
 # Build the keras model using the functional API.
-input_layer  = tensorflow.keras.layers.Input(2)
-dense_layer = tensorflow.keras.layers.Dense(4, activation="relu")(input_layer)
-output_layer = tensorflow.keras.layers.Dense(2, activation="softmax")(dense_layer)
+input_layer  = keras.layers.Input(2)
+dense_layer = keras.layers.Dense(4, activation="relu")(input_layer)
+output_layer = keras.layers.Dense(2, activation="softmax")(dense_layer)
 
-model = tensorflow.keras.Model(inputs=input_layer, outputs=output_layer)
+model = keras.Model(inputs=input_layer, outputs=output_layer)
 
 # Create an instance of the pygad.kerasga.KerasGA class to build the initial population.
 keras_ga = pygad.kerasga.KerasGA(model=model,
@@ -71,11 +71,11 @@ predictions = pygad.kerasga.predict(model=model,
 print(f"Predictions : \n{predictions}")
 
 # Calculate the binary crossentropy for the trained model.
-bce = tensorflow.keras.losses.BinaryCrossentropy()
+bce = keras.losses.BinaryCrossentropy()
 print(f"Binary Crossentropy : {bce(data_outputs, predictions).numpy()}")
 
 # Calculate the classification accuracy for the trained model.
-ba = tensorflow.keras.metrics.BinaryAccuracy()
+ba = keras.metrics.BinaryAccuracy()
 ba.update_state(data_outputs, predictions)
 accuracy = ba.result().numpy()
 print(f"Accuracy : {accuracy}")

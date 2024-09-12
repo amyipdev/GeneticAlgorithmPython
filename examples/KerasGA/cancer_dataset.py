@@ -1,5 +1,5 @@
 import tensorflow as tf
-import tensorflow.keras
+import keras
 import pygad.kerasga
 import pygad
 import numpy
@@ -11,7 +11,7 @@ def fitness_func(ga_instanse, solution, sol_idx):
                                         solution=solution,
                                         data=train_data)
 
-    cce = tensorflow.keras.losses.CategoricalCrossentropy()
+    cce = keras.losses.CategoricalCrossentropy()
     solution_fitness = 1.0 / (cce(data_outputs, predictions).numpy() + 0.00000001)
 
     return solution_fitness
@@ -80,11 +80,11 @@ predictions = pygad.kerasga.predict(model=model,
 # print("Predictions : \n", predictions)
 
 # Calculate the categorical crossentropy for the trained model.
-cce = tensorflow.keras.losses.CategoricalCrossentropy()
+cce = keras.losses.CategoricalCrossentropy()
 print(f"Categorical Crossentropy : {cce(data_outputs, predictions).numpy()}")
 
 # Calculate the classification accuracy for the trained model.
-ca = tensorflow.keras.metrics.CategoricalAccuracy()
+ca = keras.metrics.CategoricalAccuracy()
 ca.update_state(data_outputs, predictions)
 accuracy = ca.result().numpy()
 print(f"Accuracy : {accuracy}")

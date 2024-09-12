@@ -1,4 +1,4 @@
-import tensorflow.keras
+import keras
 import pygad.kerasga
 import numpy
 import pygad
@@ -10,7 +10,7 @@ def fitness_func(ga_instanse, solution, sol_idx):
                                         solution=solution,
                                         data=data_inputs)
 
-    cce = tensorflow.keras.losses.CategoricalCrossentropy()
+    cce = keras.losses.CategoricalCrossentropy()
     solution_fitness = 1.0 / (cce(data_outputs, predictions).numpy() + 0.00000001)
 
     return solution_fitness
@@ -20,11 +20,11 @@ def on_generation(ga_instance):
     print(f"Fitness    = {ga_instance.best_solution()[1]}")
 
 # Build the keras model using the functional API.
-input_layer  = tensorflow.keras.layers.Input(360)
-dense_layer = tensorflow.keras.layers.Dense(50, activation="relu")(input_layer)
-output_layer = tensorflow.keras.layers.Dense(4, activation="softmax")(dense_layer)
+input_layer  = keras.layers.Input(360)
+dense_layer = keras.layers.Dense(50, activation="relu")(input_layer)
+output_layer = keras.layers.Dense(4, activation="softmax")(dense_layer)
 
-model = tensorflow.keras.Model(inputs=input_layer, outputs=output_layer)
+model = keras.Model(inputs=input_layer, outputs=output_layer)
 
 # Create an instance of the pygad.kerasga.KerasGA class to build the initial population.
 keras_ga = pygad.kerasga.KerasGA(model=model,
@@ -35,7 +35,7 @@ data_inputs = numpy.load("../data/dataset_features.npy")
 
 # Data outputs
 data_outputs = numpy.load("../data/outputs.npy")
-data_outputs = tensorflow.keras.utils.to_categorical(data_outputs)
+data_outputs = keras.utils.to_categorical(data_outputs)
 
 # Prepare the PyGAD parameters. Check the documentation for more information: https://pygad.readthedocs.io/en/latest/README_pygad_ReadTheDocs.html#pygad-ga-class
 num_generations = 100 # Number of generations.
@@ -67,11 +67,11 @@ predictions = pygad.kerasga.predict(model=model,
 # print("Predictions : \n", predictions)
 
 # Calculate the categorical crossentropy for the trained model.
-cce = tensorflow.keras.losses.CategoricalCrossentropy()
+cce = keras.losses.CategoricalCrossentropy()
 print(f"Categorical Crossentropy : {cce(data_outputs, predictions).numpy()}")
 
 # Calculate the classification accuracy for the trained model.
-ca = tensorflow.keras.metrics.CategoricalAccuracy()
+ca = keras.metrics.CategoricalAccuracy()
 ca.update_state(data_outputs, predictions)
 accuracy = ca.result().numpy()
 print(f"Accuracy : {accuracy}")

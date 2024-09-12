@@ -1,4 +1,4 @@
-import tensorflow.keras
+import keras
 import pygad.kerasga
 import numpy
 import pygad
@@ -10,7 +10,7 @@ def fitness_func(ga_instanse, solution, sol_idx):
                                         solution=solution,
                                         data=data_inputs)
 
-    mae = tensorflow.keras.losses.MeanAbsoluteError()
+    mae = keras.losses.MeanAbsoluteError()
     abs_error = mae(data_outputs, predictions).numpy() + 0.00000001
     solution_fitness = 1.0 / abs_error
 
@@ -21,12 +21,12 @@ def on_generation(ga_instance):
     print(f"Fitness    = {ga_instance.best_solution()[1]}")
 
 # Create the Keras model.
-input_layer  = tensorflow.keras.layers.Input(3)
-dense_layer1 = tensorflow.keras.layers.Dense(5, activation="relu")(input_layer)
+input_layer  = keras.layers.Input(3)
+dense_layer1 = keras.layers.Dense(5, activation="relu")(input_layer)
 dense_layer1.trainable = False
-output_layer = tensorflow.keras.layers.Dense(1, activation="linear")(dense_layer1)
+output_layer = keras.layers.Dense(1, activation="linear")(dense_layer1)
 
-model = tensorflow.keras.Model(inputs=input_layer, outputs=output_layer)
+model = keras.Model(inputs=input_layer, outputs=output_layer)
 
 keras_ga = pygad.kerasga.KerasGA(model=model,
                                  num_solutions=10)
@@ -69,7 +69,7 @@ predictions = pygad.kerasga.predict(model=model,
                                     data=data_inputs)
 print(f"Predictions : \n{predictions}")
 
-mae = tensorflow.keras.losses.MeanAbsoluteError()
+mae = keras.losses.MeanAbsoluteError()
 abs_error = mae(data_outputs, predictions).numpy()
 print(f"Absolute Error : {abs_error}")
 
